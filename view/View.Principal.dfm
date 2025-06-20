@@ -1,0 +1,99 @@
+object FrmPedidoDesconto: TFrmPedidoDesconto
+  Left = 0
+  Top = 0
+  Caption = 'Calculadora de Pre'#231'os'
+  ClientHeight = 611
+  ClientWidth = 881
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  Position = poScreenCenter
+  TextHeight = 15
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 881
+    Height = 611
+    ActivePage = TabSheet1
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 624
+    ExplicitHeight = 441
+    object TabSheet1: TTabSheet
+      Caption = 'Calculo de Pre'#231'os'
+      object EdtSKU: TEdit
+        Left = 16
+        Top = 16
+        Width = 177
+        Height = 23
+        TabOrder = 0
+        Text = 'EdtSKU'
+      end
+      object DBGPEdidos: TDBGrid
+        Left = 312
+        Top = 16
+        Width = 558
+        Height = 169
+        DataSource = DataModule1.DSPedidos
+        ReadOnly = True
+        TabOrder = 1
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -12
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = []
+      end
+      object DBGridItensPEdido: TDBGrid
+        Left = 312
+        Top = 205
+        Width = 558
+        Height = 329
+        DataSource = DataModule1.DSItensPedido
+        TabOrder = 2
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -12
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = []
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 540
+        Width = 873
+        Height = 41
+        Align = alBottom
+        TabOrder = 3
+        ExplicitLeft = 48
+        ExplicitTop = 544
+        ExplicitWidth = 185
+      end
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 236
+    Top = 42
+    object Cadastros1: TMenuItem
+      Caption = 'Cadastros'
+      object Produtos1: TMenuItem
+        Caption = 'Produtos'
+      end
+      object Pedidos1: TMenuItem
+        Caption = 'Pedidos'
+        OnClick = Pedidos1Click
+      end
+      object Usurios1: TMenuItem
+        Caption = 'Usu'#225'rios'
+      end
+    end
+    object Sair1: TMenuItem
+      Caption = 'Sair'
+      object Logofde1: TMenuItem
+        Caption = 'Log of de:'
+      end
+    end
+  end
+end

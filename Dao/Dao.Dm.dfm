@@ -1,0 +1,101 @@
+object DataModule1: TDataModule1
+  Height = 474
+  Width = 434
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\FONTES\calculadora precos minimos\DataBase\CALCPRECO' +
+        'SMINIMOS.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Protocol=TCPIP'
+      'Server=127.0.0.1'
+      'Port=3050'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 80
+    Top = 32
+  end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    VendorLib = 'C:\FONTES\calculadora precos minimos\Dao\fbclient.dll'
+    Left = 208
+    Top = 40
+  end
+  object FDQProdutos: TFDQuery
+    Active = True
+    Connection = FDConnection1
+    SQL.Strings = (
+      'SELECT '
+      '  SKU,'
+      '  DESCRICAO,'
+      '  PRECOVENDA'
+      'FROM '
+      '  PRODUTOS'
+      'ORDER BY '
+      '  DESCRICAO;')
+    Left = 72
+    Top = 152
+  end
+  object DSProdutos: TDataSource
+    DataSet = FDQProdutos
+    Left = 176
+    Top = 152
+  end
+  object FDQPedidos: TFDQuery
+    Active = True
+    Connection = FDConnection1
+    SQL.Strings = (
+      'SELECT * FROM Pedidos ORDER BY DataPedido DESC')
+    Left = 64
+    Top = 216
+  end
+  object FDQItensPedido: TFDQuery
+    Active = True
+    MasterSource = DSPedidos
+    MasterFields = 'IDPEDIDO'
+    DetailFields = 'IDPEDIDO'
+    Connection = FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    SQL.Strings = (
+      'SELECT * FROM PedidoItens WHERE IDPedido = :IDPedido')
+    Left = 64
+    Top = 288
+    ParamData = <
+      item
+        Name = 'IDPEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 1
+      end>
+  end
+  object DSPedidos: TDataSource
+    DataSet = FDQPedidos
+    Left = 176
+    Top = 224
+  end
+  object DSItensPedido: TDataSource
+    DataSet = FDQItensPedido
+    Left = 176
+    Top = 296
+  end
+  object FDTransaction1: TFDTransaction
+    Connection = FDConnection1
+    Left = 336
+    Top = 40
+  end
+  object FDQueryVendedores: TFDQuery
+    Active = True
+    Connection = FDConnection1
+    SQL.Strings = (
+      'SELECT IDVendedor, Nome FROM Vendedores ORDER BY Nome')
+    Left = 64
+    Top = 360
+  end
+  object DSVendedores: TDataSource
+    DataSet = FDQueryVendedores
+    Left = 168
+    Top = 360
+  end
+end

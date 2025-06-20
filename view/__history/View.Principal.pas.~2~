@@ -1,0 +1,29 @@
+unit View.Principal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Dao.Dm, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.ComCtrls;
+
+type
+  TFrmPedidoDesconto = class(TForm)
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    EdtSKU: TEdit;
+    DBGrid1: TDBGrid;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPedidoDesconto: TFrmPedidoDesconto;
+
+implementation
+
+{$R *.dfm}
+
+end.

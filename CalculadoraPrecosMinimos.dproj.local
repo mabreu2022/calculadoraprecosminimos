@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2025/06/20 12:44:42.987,=C:\Users\Mauricio Abreu\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:46:22.368,C:\FONTES\calculadora precos minimos\view\View.Principal.pas=C:\Users\Mauricio Abreu\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:46:22.368,C:\FONTES\calculadora precos minimos\view\View.Principal.dfm=C:\Users\Mauricio Abreu\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/06/20 12:46:39.578,C:\FONTES\calculadora precos minimos\CalculadoraPrecosMinimos.dproj=C:\Users\Mauricio Abreu\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2025/06/20 12:50:26.713,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:50:54.709,C:\FONTES\calculadora precos minimos\Dao\Dao.Dm.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:50:54.709,C:\FONTES\calculadora precos minimos\Dao\Dao.Dm.dfm=C:\FONTES\calculadora precos minimos\Unit1.dfm</Transaction>
+    <Transaction>2025/06/20 12:54:44.400,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:55:54.622,C:\FONTES\calculadora precos minimos\Model\uModel.Produto.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:56:11.021,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 12:56:34.818,C:\FONTES\calculadora precos minimos\Controller\uController.Produto.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 13:49:33.812,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 13:49:47.678,C:\FONTES\calculadora precos minimos\view\uView.Login.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 13:49:47.678,C:\FONTES\calculadora precos minimos\view\uView.Login.dfm=C:\FONTES\calculadora precos minimos\Unit1.dfm</Transaction>
+    <Transaction>2025/06/20 13:59:35.784,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:01:11.175,C:\FONTES\calculadora precos minimos\Core\uSessao.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:01:39.438,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:01:54.040,C:\FONTES\calculadora precos minimos\Core\uConstantes.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:19:42.059,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:20:32.366,C:\FONTES\calculadora precos minimos\view\uView.CadastroDeProdutos.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 14:20:32.366,C:\FONTES\calculadora precos minimos\view\uView.CadastroDeProdutos.dfm=C:\FONTES\calculadora precos minimos\Unit1.dfm</Transaction>
+    <Transaction>2025/06/20 14:21:03.490,=C:\FONTES\calculadora precos minimos\Unit2.pas</Transaction>
+    <Transaction>2025/06/20 14:21:43.010,C:\FONTES\calculadora precos minimos\view\uView.CadastroDePedidos.pas=C:\FONTES\calculadora precos minimos\Unit2.pas</Transaction>
+    <Transaction>2025/06/20 14:21:43.011,C:\FONTES\calculadora precos minimos\view\uView.CadastroDePedidos.dfm=C:\FONTES\calculadora precos minimos\Unit2.dfm</Transaction>
+    <Transaction>2025/06/20 15:10:41.586,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 15:10:58.580,C:\FONTES\calculadora precos minimos\Model\uModel.Pedido.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 15:11:54.664,=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+    <Transaction>2025/06/20 15:12:10.831,C:\FONTES\calculadora precos minimos\Controller\uController.Pedido.pas=C:\FONTES\calculadora precos minimos\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

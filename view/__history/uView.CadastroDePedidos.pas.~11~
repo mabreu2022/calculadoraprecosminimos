@@ -1,0 +1,149 @@
+﻿unit uView.CadastroDePedidos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.DBCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Dao.Dm,
+  uSessao,
+  uController.Pedido,
+  uModel.Pedido,
+  FireDAC.Stan.Param;
+
+type
+  TFrmPedidoCadastro = class(TForm)
+    dtpDataPedido: TDateTimePicker;
+    DBGrid1: TDBGrid;
+    Panel1: TPanel;
+    btnAdicionarItem: TButton;
+    btnRemoverItem: TButton;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+    cbVendedor: TDBLookupComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure btnAdicionarItemClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPedidoCadastro: TFrmPedidoCadastro;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmPedidoCadastro.btnAdicionarItemClick(Sender: TObject);
+var
+  IDPedidoGerado: Integer;
+begin
+  try
+    DataModule1.FDTransaction1.StartTransaction;
+
+    // Inserir pedido
+    with DataModule1.FDQPedidos do
+    begin
+      SQL.Text := 'INSERT INTO PEDIDOS (DataPedido, IDVendedor, IDUsuario) ' +
+                  'VALUES (:Data, :Vendedor, :Usuario) RETURNING IDPedido';
+      ParamByName('Data').AsDate := dtpDataPedido.Date;
+      ParamByName('Vendedor').AsInteger := cbVendedor.KeyValue;
+      ParamByName('Usuario').AsInteger := IDUsuarioLogado;
+      Open;
+      IDPedidoGerado := FieldByName('IDPedido').AsInteger;
+      Close;
+    end;
+
+    // Inserir itens
+    with DataModule1.FDQItensPedido do
+    begin
+      First;
+      while not Eof do
+      begin
+        SQL.Text := 'INSERT INTO PEDIDOITENS (IDPedido, IDProduto, Quantidade, PrecoUnitario) ' +
+                    'VALUES (:Pedido, :Produto, :Qtd, :Preco)';
+        ParamByName('Pedido').AsInteger := IDPedidoGerado;
+        ParamByName('Produto').AsInteger := FieldByName('IDProduto').AsInteger;
+        ParamByName('Qtd').AsInteger := FieldByName('Quantidade').AsInteger;
+        ParamByName('Preco').AsFloat := FieldByName('PrecoUnitario').AsFloat;
+        ExecSQL;
+        Next;
+      end;
+    end;
+
+    DataModule1.FDTransaction1.Commit;
+    ShowMessage('Pedido salvo com sucesso!');
+    Close;
+  except
+    on E: Exception do
+    begin
+      DataModule1.FDTransaction1.Rollback;
+      ShowMessage('Erro ao salvar pedido: ' + E.Message);
+    end;
+  end;
+
+
+end;
+
+procedure TFrmPedidoCadastro.btnSalvarClick(Sender: TObject);
+var
+  Pedido: TPedido;
+  //Item: TPedidoItem;
+begin
+  Pedido := TPedido.Create;
+  try
+    Pedido.DataPedido := dtpDataPedido.Date;
+    Pedido.IDVendedor := cbVendedor.KeyValue;
+    Pedido.IDUsuario := IDUsuarioLogado;
+
+    // ← Substitua essa parte:
+    // Pedido.Itens := ObterItensDaTela;
+
+    // → Por isso:
+    DataModule1.FDQItensPedido.First;
+    while not DataModule1.FDQItensPedido.Eof do
+    begin
+      Pedido.AdicionarItem(
+        DataModule1.FDQItensPedido.FieldByName('IDProduto').AsInteger,
+        DataModule1.FDQItensPedido.FieldByName('Quantidade').AsInteger,
+        DataModule1.FDQItensPedido.FieldByName('PrecoUnitario').AsFloat
+      );
+      DataModule1.FDQItensPedido.Next;
+    end;
+
+    if TPedidoController.SalvarPedido(Pedido, DataModule1.FDConnection1) then
+    begin
+      ShowMessage('Pedido salvo com sucesso!');
+      Close;
+    end;
+  finally
+    Pedido.Free;
+  end;
+
+end;
+
+procedure TFrmPedidoCadastro.FormCreate(Sender: TObject);
+begin
+ DataModule1.FDQueryVendedores.Open;
+end;
+
+end.

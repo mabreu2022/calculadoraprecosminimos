@@ -1,0 +1,191 @@
+﻿unit uView.CadastroDePedidos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.DBCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Dao.Dm,
+  uSessao,
+  uController.Pedido,
+  uModel.Pedido,
+  FireDAC.Stan.Param, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TFrmPedidoCadastro = class(TForm)
+    dtpDataPedido: TDateTimePicker;
+    DBGItensPedido: TDBGrid;
+    Panel1: TPanel;
+    btnAdicionarItem: TButton;
+    btnRemoverItem: TButton;
+    btnSalvar: TButton;
+    btnCancelar: TButton;
+    cbVendedor: TDBLookupComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    mtbItensPedido: TFDMemTable;
+    dsItensPedido: TDataSource;
+    cbProduto: TDBLookupComboBox;
+    Label3: TLabel;
+    edtPrecoUnitario: TEdit;
+    lblTotalPedido: TLabel;
+    procedure btnAdicionarItemClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnRemoverItemClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AtualizarPrecoProduto;
+    procedure AtualizarTotalPedido;
+
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPedidoCadastro: TFrmPedidoCadastro;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmPedidoCadastro.AtualizarPrecoProduto;
+begin
+  if not DataModule1.FDQProdutos.IsEmpty then
+    //edtPrecoUnitario.Value := DataModule1.FDQProdutos.FieldByName('PRECOVENDA');
+end;
+
+procedure TFrmPedidoCadastro.AtualizarTotalPedido;
+var
+  Total: Double;
+begin
+  Total := 0;
+  mtbItensPedido.DisableControls;
+  try
+    mtbItensPedido.First;
+    while not mtbItensPedido.Eof do
+    begin
+      Total := Total + mtbItensPedido.FieldByName('TotalItem').AsFloat;
+      mtbItensPedido.Next;
+    end;
+  finally
+    mtbItensPedido.EnableControls;
+  end;
+
+  lblTotalPedido.Caption := Format('Total: R$ %.2f', [Total]);
+
+
+end;
+
+procedure TFrmPedidoCadastro.btnAdicionarItemClick(Sender: TObject);
+var
+  ProdutoID: Integer;
+  Descricao: string;
+  Qtd: Integer;
+  Preco: Double;
+  ProdutoIDStr, QtdStr, PrecoStr: string;
+
+begin
+  // Simulação básica: substitua com popup/lookup quando quiser
+  if not InputQuery('ID do Produto', 'Digite o código do produto:', ProdutoIDStr) then Exit;
+  ProdutoID := StrToInt(ProdutoIDStr);
+  //Descricao := BuscarDescricaoProduto(ProdutoID); // você pode montar essa função
+  if not InputQuery('Quantidade', 'Digite a quantidade:', QtdStr) then Exit;
+  Qtd := StrToInt(QtdStr);
+  if not InputQuery('Preço', 'Digite o preço unitário:', PrecoStr) then Exit;
+  Preco := StrToFloat(PrecoStr);
+
+  mtbItensPedido.Append;
+  mtbItensPedido.FieldByName('IDProduto').AsInteger := ProdutoID;
+  mtbItensPedido.FieldByName('DescricaoProduto').AsString := Descricao;
+  mtbItensPedido.FieldByName('Quantidade').AsInteger := Qtd;
+  mtbItensPedido.FieldByName('PrecoUnitario').AsFloat := Preco;
+  mtbItensPedido.FieldByName('TotalItem').AsFloat := Qtd * Preco;
+  mtbItensPedido.Post;
+
+  AtualizarTotalPedido;
+
+end;
+
+procedure TFrmPedidoCadastro.btnRemoverItemClick(Sender: TObject);
+begin
+  if not mtbItensPedido.IsEmpty then
+    mtbItensPedido.Delete;
+end;
+
+procedure TFrmPedidoCadastro.btnSalvarClick(Sender: TObject);
+var
+  Pedido: TPedido;
+begin
+  // Validação mínima
+  if mtbItensPedido.IsEmpty then
+  begin
+    ShowMessage('Adicione pelo menos um item ao pedido.');
+    Exit;
+  end;
+
+  Pedido := TPedido.Create;
+  try
+    Pedido.DataPedido := dtpDataPedido.Date;
+    Pedido.IDVendedor := cbVendedor.KeyValue;
+    Pedido.IDUsuario := IDUsuarioLogado;
+
+    // Adicionar os itens da memória
+    mtbItensPedido.First;
+    while not mtbItensPedido.Eof do
+    begin
+      Pedido.AdicionarItem(
+        mtbItensPedido.FieldByName('IDProduto').AsInteger,
+        mtbItensPedido.FieldByName('Quantidade').AsInteger,
+        mtbItensPedido.FieldByName('PrecoUnitario').AsFloat
+      );
+      mtbItensPedido.Next;
+    end;
+
+    // Salvar no banco via Controller
+    if TPedidoController.SalvarPedido(Pedido, DataModule1.FDConnection1) then
+    begin
+      ShowMessage('Pedido salvo com sucesso!');
+      Close;
+    end;
+  finally
+    Pedido.Free;
+  end;
+
+
+end;
+
+procedure TFrmPedidoCadastro.FormCreate(Sender: TObject);
+begin
+ DataModule1.FDQueryVendedores.Open;
+
+ with mtbItensPedido.FieldDefs do
+  begin
+    Clear;
+    Add('IDProduto', ftInteger);
+    Add('DescricaoProduto', ftString, 100);
+    Add('Quantidade', ftInteger);
+    Add('PrecoUnitario', ftFloat);
+    Add('TotalItem', ftFloat);
+  end;
+
+  mtbItensPedido.CreateDataSet;
+end;
+
+end.

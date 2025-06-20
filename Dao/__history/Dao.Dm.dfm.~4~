@@ -1,0 +1,67 @@
+object DataModule1: TDataModule1
+  Height = 409
+  Width = 434
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\FONTES\calculadora precos minimos\DataBase\CALCPRECO' +
+        'SMINIMOS.FDB'
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'Protocol=TCPIP'
+      'Server=127.0.0.1'
+      'Port=3050'
+      'DriverID=FB')
+    Connected = True
+    LoginPrompt = False
+    Left = 80
+    Top = 32
+  end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    VendorLib = 'C:\FONTES\calculadora precos minimos\Dao\fbclient.dll'
+    Left = 208
+    Top = 40
+  end
+  object FDQProdutos: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'SELECT'
+      '  p.IDPedido,'
+      '  p.DataPedido,'
+      '  p.NomeVendedor,'
+      '  p.ValorTotal,'
+      '  p.DescontoTotal,'
+      '  p.ValorFinal'
+      'FROM'
+      '  Pedidos p'
+      'ORDER BY'
+      '  p.DataPedido DESC;')
+    Left = 72
+    Top = 152
+  end
+  object DSProdutos: TDataSource
+    DataSet = FDQProdutos
+    Left = 176
+    Top = 152
+  end
+  object FDQPedidos: TFDQuery
+    Connection = FDConnection1
+    Left = 64
+    Top = 216
+  end
+  object FDQItensPedido: TFDQuery
+    Connection = FDConnection1
+    Left = 64
+    Top = 288
+  end
+  object DSPedidos: TDataSource
+    DataSet = FDQPedidos
+    Left = 176
+    Top = 224
+  end
+  object DSItensPedido: TDataSource
+    DataSet = FDQItensPedido
+    Left = 176
+    Top = 296
+  end
+end

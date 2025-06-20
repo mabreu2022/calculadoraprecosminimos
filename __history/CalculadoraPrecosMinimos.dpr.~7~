@@ -1,0 +1,33 @@
+program CalculadoraPrecosMinimos;
+
+uses
+  Vcl.Forms,
+  Vcl.Dialogs,
+  View.Principal in 'view\View.Principal.pas' {FrmPedidoDesconto},
+  Dao.Dm in 'Dao\Dao.Dm.pas' {DataModule1: TDataModule},
+  uModel.Produto in 'Model\uModel.Produto.pas',
+  uController.Produto in 'Controller\uController.Produto.pas',
+  uView.Login in 'view\uView.Login.pas' {FrmLogin};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDataModule1, DataModule1);
+
+  // Cria manualmente a tela de login e exibe como modal
+  FrmLogin := TFrmLogin.Create(nil);
+  try
+    if FrmLogin.ShowModal = 1 then
+    begin
+      Application.CreateForm(TFrmPedidoDesconto, FrmPedidoDesconto);
+      Application.Run;
+    end
+    else
+      Application.Terminate;
+  finally
+    FrmLogin.Free;
+  end;
+
+end.
